@@ -1,0 +1,33 @@
+
+services:
+    eclipsetemurin17jdk:
+        build: ./
+        container_name: eclipsetemurin-17jdk-jammy
+        restart: always
+        links:
+            - database
+        ports:
+            - 8080:8080
+        volumes:
+            - ./:/var/www/html
+        tty: true
+    database:
+        image: postgres:15.4-bullseye
+        container_name: postgres-bullseye
+        restart: always
+        environment:
+            POSTGRES_USER: pgadmin
+            POSTGRES_PASSWORD: pgadmin
+            POSTGRES_DB: spring
+    pgadmin:
+        image: dpage/pgadmin4:7.6
+        container_name: pgadmin
+        restart: always
+        links:
+            - database
+        ports:
+            - 8082:80
+        environment:
+            PGADMIN_DEFAULT_EMAIL: pgadmin@mail.loc
+            PGADMIN_DEFAULT_PASSWORD: pgadmin
+
